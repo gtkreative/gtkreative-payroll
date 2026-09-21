@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
     @Query("SELECT * FROM attendances WHERE employeeId = :employeeId ORDER BY date DESC") fun attendance(employeeId: Long): Flow<List<Attendance>>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsertAttendance(item: Attendance)
     @Query("SELECT * FROM attendances WHERE date BETWEEN :start AND :end") suspend fun attendanceRange(start: String, end: String): List<Attendance>
+    @Query("DELETE FROM attendances WHERE date BETWEEN :start AND :end") suspend fun deleteAttendanceRange(start: String, end: String)
 
     @Query("SELECT * FROM loans WHERE employeeId = :employeeId ORDER BY date DESC") fun loans(employeeId: Long): Flow<List<Loan>>
     @Insert suspend fun insertLoan(loan: Loan)
