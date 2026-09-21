@@ -61,4 +61,4 @@
             NumberField(late, { late = it }, "Terlambat (menit)", Modifier.weight(1f)); NumberField(overtime, { overtime = it }, "Lembur (jam)", Modifier.weight(1f))
         }
         Spacer(Modifier.height(12.dp))
-        Button(onClick = { selected?.let { scope.launch { dao.upsertAttendance(
+        Button(onClick = { selected?.let { scope.launch { dao.upsertAttendance(Attendance(it.id, fmt
