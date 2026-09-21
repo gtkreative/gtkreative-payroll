@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
       - name: Extract MVP source archive
         run: |
           unzip -q GTKreativePayroll_MVP_v0.1.zip -d build-source
