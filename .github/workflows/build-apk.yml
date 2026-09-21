@@ -69,7 +69,7 @@ jobs:
           cp .build/Dao.kt build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/data/Dao.kt
           cp .build/Entities.kt build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/data/Entities.kt
           bash .build/gradle_fix.sh
-          sed -i 's/, contentColor = Charcoal//g' build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
+          sed -i 's/contentColor = Charcoal//g' build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
 
 
       - name: Set up JDK 17
