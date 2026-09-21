@@ -81,7 +81,10 @@ jobs:
 
       - name: Build debug APK
         working-directory: build-source/PayrollApp
-        run: gradle --no-daemon :app:assembleDebug
+        env:
+          GRADLE_OPTS: "-Xmx2g -XX:MaxMetaspaceSize=1g"
+          JAVA_TOOL_OPTIONS: "-Xmx2g -XX:MaxMetaspaceSize=1g"
+        run: gradle --no-daemon --max-workers=2 :app:assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
