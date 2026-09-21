@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
     @Query("SELECT * FROM loans WHERE employeeId = :employeeId ORDER BY date DESC") fun loans(employeeId: Long): Flow<List<Loan>>
     @Query("SELECT COALESCE(SUM(amount),0) FROM loans WHERE employeeId = :employeeId AND date <= :date") suspend fun loanBalance(employeeId: Long, date: String): Long
     @Query("SELECT COUNT(*) FROM loans WHERE employeeId = :employeeId AND date = :date AND description = :description") suspend fun loanTransactionExists(employeeId: Long, date: String, description: String): Int
+    @Query("SELECT COALESCE(-SUM(amount),0) FROM loans WHERE employeeId = :employeeId AND date = :date AND description = :description") suspend fun loanPayment(employeeId: Long, date: String, description: String): Long
     @Query("SELECT * FROM loan_settings WHERE employeeId = :employeeId LIMIT 1") suspend fun loanSetting(employeeId: Long): LoanSetting?
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsertLoanSetting(setting: LoanSetting)
     @Insert suspend fun insertLoan(loan: Loan)
