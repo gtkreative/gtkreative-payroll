@@ -12,16 +12,50 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Decode and extract MVP source archive
+      - name: Extract MVP source archive from local ZIP records
         run: |
-          set +e
-          tr -cd 'A-Za-z0-9+/=' < GTKreativePayroll_MVP_v0.1.zip | base64 -d > mvp.zip
-          decode_status=$?
-          set -e
-          echo "base64 exit: $decode_status"
-          wc -c mvp.zip
-          unzip -t mvp.zip
-          unzip -q mvp.zip -d build-source
+          python3 - <<'PY'
+          import os, struct, zlib
+          src = "GTKreativePayroll_MVP_v0.1.zip"
+          out = "build-source"
+          data = open(src, "rb").read()
+          sig = bytes([0x50, 0x4b, 0x03, 0x04])
+          pos = 0
+          count = 0
+          while True:
+              pos = data.find(sig, pos)
+              if pos < 0:
+                  break
+              if pos + 30 > len(data):
+                  break
+              _, ver, flag, method, mt, md, crc, csize, usize, nlen, elen = struct.unpack_from("<IHHHHHIIIHH", data, pos)
+              name_b = data[pos+30:pos+30+nlen]
+              extra_end = pos + 30 + nlen + elen
+              if extra_end > len(data):
+                  break
+              name = name_b.decode("utf-8")
+              payload_end = extra_end + csize
+              if payload_end > len(data):
+                  raise SystemExit(f"Truncated entry: {name}")
+              target = os.path.join(out, name)
+              if name.endswith("/"):
+                  os.makedirs(target, exist_ok=True)
+              else:
+                  os.makedirs(os.path.dirname(target), exist_ok=True)
+                  payload = data[extra_end:payload_end]
+                  if method == 0:
+                      raw = payload
+                  elif method == 8:
+                      raw = zlib.decompress(payload, -15)
+                  else:
+                      raise SystemExit(f"Unsupported ZIP method {method}: {name}")
+                  open(target, "wb").write(raw)
+              count += 1
+              pos = payload_end
+          if count < 10:
+              raise SystemExit(f"Archive extraction found only {count} entries")
+          print(f"Extracted {count} entries from local ZIP records")
+          PY
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
