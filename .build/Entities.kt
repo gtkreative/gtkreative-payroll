@@ -45,3 +45,10 @@ data class CompanyProfile(
     val signatureUri: String? = null,
     val stampUri: String? = null
 )
+
+
+@Entity(tableName = "loan_settings")
+data class LoanSetting(
+    @PrimaryKey val employeeId: Long,
+    val installment: Long = 0
+)
