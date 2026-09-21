@@ -76,6 +76,8 @@ val balance=dao.loanBalance(e.id,fmt(paymentDate));val paymentDesc="CICILAN KASB
 val subtotal=base+meal+otp+otm;PayrollRow(e,days,late,ot,base,meal,otp,otm,deduction,subtotal-deduction)}
 }
 '''
+s=re.sub(r'private suspend fun calculatePayroll.*?@Composable private fun PayrollCard',calc+'@Composable private fun PayrollCard',s,flags=re.S)
+
 cards=r'''@Composable private fun PayrollCard(row:PayrollRow,paymentDate:LocalDate,preview:()->Unit,share:()->Unit){
 Surface(shape=RoundedCornerShape(20.dp),color=Color.White,modifier=Modifier.fillMaxWidth()){Column(Modifier.padding(18.dp)){Row(verticalAlignment=Alignment.CenterVertically){Column(Modifier.weight(1f)){Text(row.employee.name,fontWeight=FontWeight.Bold,fontSize=18.sp);Text(row.employee.position,color=Color.Gray,fontSize=12.sp)};Text(rupiah(row.total),fontWeight=FontWeight.Bold,fontSize=17.sp,color=Green)};Text("Gajian ${fmt(paymentDate)}",color=Blue,fontSize=12.sp);HorizontalDivider(Modifier.padding(vertical=10.dp));Text("Hari kerja ${row.days} • Lembur ${row.overtime} jam • Telat ${row.lateMinutes} menit",color=Color.Gray,fontSize=12.sp);Spacer(Modifier.height(10.dp));Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){OutlinedButton(onClick=preview,modifier=Modifier.weight(1f)){Icon(Icons.Default.Visibility,null);Spacer(Modifier.width(5.dp));Text("Preview")};Button(onClick=share,modifier=Modifier.weight(1f),colors=ButtonDefaults.buttonColors(containerColor=Blue)){Icon(Icons.Default.Share,null);Spacer(Modifier.width(5.dp));Text("Bagikan")}}}}
 }
@@ -108,4 +110,4 @@ s=re.sub(r'private fun shareSlip\(.*?\n\}',share,s,count=1,flags=re.S)
 s=s.replace('1 -> EmployeesScreen(employees, { showAdd = true })','1 -> EmployeesScreen(employees, dao, { showAdd = true })')
 p.write_text(s)
 
-s=s.replace("if (showAdd) AddEmployeeDialog(dao) { showAdd = false }","if (showAdd) AddEmployeeDialog({ showAdd = false }) { e -> scope.launch { dao.insertEmployee(e); showAdd = false } }")
+s=s.replace("if (showAdd) AddEmployeeDialog({ showAdd = false }) { e -> scope.launch { dao.insertEmployee(e); showAdd = false } }","if (showAdd) AddEmployeeDialog(dao, { showAdd = false })")
