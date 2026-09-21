@@ -9,6 +9,7 @@ s = s.replace(
     "Surface(shape = RoundedCornerShape(24.dp), color = Charcoal, modifier = Modifier.fillMaxWidth()) {"
 )
 s = s.replace(", )", ")")
+s = s.replace('val base = if (type == "MINGGUAN") (e.baseSalary.toDouble() * days / e.standardWorkDays).roundToLong() else (e.baseSalary.toDouble() * days / e.standardWorkDays).roundToLong()', 'val base = (e.baseSalary.toDouble() * days / e.standardWorkDays.coerceAtLeast(1)).roundToLong()')
 
 add = r'''@Composable private fun AddEmployeeDialog(close: () -> Unit, save: (Employee) -> Unit) {
     var name by remember { mutableStateOf("") }
