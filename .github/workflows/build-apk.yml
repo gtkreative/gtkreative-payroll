@@ -9,8 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - name: Download MVP source archive
+        run: |
+          curl -L --fail --retry 3 -o GTKreativePayroll_MVP_v0.1.zip \
+            https://raw.githubusercontent.com/gtkreative/gtkreative-payroll/main/GTKreativePayroll_MVP_v0.1.zip
+          unzip -q GTKreativePayroll_MVP_v0.1.zip -d build-source
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -22,12 +25,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.9"
-
-      - name: Reconstruct MVP source archive
-        run: |
-          rm -rf build-source
-          cat .build/zip.part1 .build/zip.part2 .build/zip.part3 .build/zip.part4 .build/zip.part5 | tr -d '\n\r' | base64 -d > GTKreativePayroll_MVP_v0.1.zip
-          unzip -q GTKreativePayroll_MVP_v0.1.zip -d build-source
 
       - name: Build debug APK
         working-directory: build-source/PayrollApp
