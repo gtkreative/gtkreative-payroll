@@ -99,4 +99,4 @@ class MainActivity : ComponentActivity() {
         Text("Payroll", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Charcoal)
         Text("Ringkasan penggajian", color = Color.Gray)
         Spacer(Modifier.height(20.dp))
-        Surface(shape = RoundedCornerShape(24.dp), color = Charcoal, modifier = Modifier.fillMaxWidth()) {
+        Surface(shape =
