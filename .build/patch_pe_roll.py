@@ -111,3 +111,9 @@ s=s.replace('1 -> EmployeesScreen(employees, { showAdd = true })','1 -> Employee
 p.write_text(s)
 
 s=re.sub(r"if \(showAdd\) AddEmployeeDialog\([^\n]*", "if (showAdd) AddEmployeeDialog(dao, { showAdd = false })", s)
+
+# Final structural replacements after all legacy patches.
+s=re.sub(r'@Composable private fun EmployeesScreen.*?@Composable private fun AttendanceScreen',emps+'\\n@Composable private fun AttendanceScreen',s,flags=re.S)
+s=re.sub(r'@Composable private fun AddEmployeeDialog.*?@Composable private fun CompanyDialog',add+'\\n@Composable private fun CompanyDialog',s,flags=re.S)
+s=re.sub(r'if \\(showAdd\\) AddEmployeeDialog\\([^\\n]*', 'if (showAdd) AddEmployeeDialog(dao, { showAdd = false })', s)
+s=re.sub(r'1 -> EmployeesScreen\\(employees, [^\\n]*', '1 -> EmployeesScreen(employees, dao, { showAdd = true })', s)
