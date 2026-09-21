@@ -65,7 +65,10 @@ jobs:
           cat .build/main0.kt .build/main1.kt .build/main2.kt .build/main3.kt .build/main4.kt .build/main5.kt > build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
           wc -c build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
           printf '\nandroid.useAndroidX=true\nandroid.enableJetifier=true\n' >> build-source/PayrollApp/gradle.properties
-          printf '\n\ntasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {\n    options.release.set(17)\n}\n\ntasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {\n    kotlinOptions.jvmTarget = "17"\n}\n' >> build-source/PayrollApp/app/build.gradle.kts
+          printf '\n\ntasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+}\n\ntasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {\n    kotlinOptions.jvmTarget = "17"\n}\n' >> build-source/PayrollApp/app/build.gradle.kts
 
 
       - name: Set up JDK 17
