@@ -110,4 +110,4 @@ s=re.sub(r'private fun shareSlip\(.*?\n\}',share,s,count=1,flags=re.S)
 s=s.replace('1 -> EmployeesScreen(employees, { showAdd = true })','1 -> EmployeesScreen(employees, dao, { showAdd = true })')
 p.write_text(s)
 
-s=s.replace("if (showAdd) AddEmployeeDialog({ showAdd = false }) { e -> scope.launch { dao.insertEmployee(e); showAdd = false } }","if (showAdd) AddEmployeeDialog(dao, { showAdd = false })")
+s=re.sub(r"if \(showAdd\) AddEmployeeDialog\([^\n]*", "if (showAdd) AddEmployeeDialog(dao, { showAdd = false })", s)
