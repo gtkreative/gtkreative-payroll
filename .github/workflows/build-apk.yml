@@ -14,7 +14,13 @@ jobs:
 
       - name: Decode and extract MVP source archive
         run: |
+          set +e
           tr -cd 'A-Za-z0-9+/=' < GTKreativePayroll_MVP_v0.1.zip | base64 -d > mvp.zip
+          decode_status=$?
+          set -e
+          echo "base64 exit: $decode_status"
+          wc -c mvp.zip
+          unzip -t mvp.zip
           unzip -q mvp.zip -d build-source
 
       - name: Set up JDK 17
