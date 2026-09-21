@@ -63,14 +63,21 @@ jobs:
           PY
 
           cat .build/main0.kt .build/main1.kt .build/main2.kt .build/main3.kt .build/main4.kt .build/main5.kt > build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
+          python3 .build/patch_pe_roll.py
+          mkdir -p build-source/PayrollApp/app/src/main/res/drawable
+          cp .build/pe_roll_logo.xml build-source/PayrollApp/app/src/main/res/drawable/pe_roll_logo.xml
+          sed -i 's/android:label="GTKreative Payroll"/android:label="Pe-Roll" android:icon="@drawable\/pe_roll_logo" android:roundIcon="@drawable\/pe_roll_logo"/' build-source/PayrollApp/app/src/main/AndroidManifest.xml
           wc -c build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
-          printf '\nandroid.useAndroidX=true\nandroid.enableJetifier=true\nkotlin.jvm.target.validation.mode=warning\n' >> build-source/PayrollApp/gradle.properties
+          printf '
+android.useAndroidX=true
+android.enableJetifier=true
+kotlin.jvm.target.validation.mode=warning
+' >> build-source/PayrollApp/gradle.properties
           cp .build/AppDatabase.kt build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/data/AppDatabase.kt
           cp .build/Dao.kt build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/data/Dao.kt
           cp .build/Entities.kt build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/data/Entities.kt
           bash .build/gradle_fix.sh
           sed -i 's/contentColor = Charcoal//g' build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
-
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
