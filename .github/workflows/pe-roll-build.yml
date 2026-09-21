@@ -35,6 +35,7 @@ jobs:
           wc -l -c build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
           nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '135,145p'
           nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '198,210p'
+          nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '105,128p'
 
       - uses: actions/setup-java@v4
         with:
