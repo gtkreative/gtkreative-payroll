@@ -15,6 +15,10 @@ import kotlinx.coroutines.flow.Flow
     @Query("DELETE FROM attendances WHERE date BETWEEN :start AND :end") suspend fun deleteAttendanceRange(start: String, end: String)
 
     @Query("SELECT * FROM loans WHERE employeeId = :employeeId ORDER BY date DESC") fun loans(employeeId: Long): Flow<List<Loan>>
+    @Query("SELECT COALESCE(SUM(amount),0) FROM loans WHERE employeeId = :employeeId AND date <= :date") suspend fun loanBalance(employeeId: Long, date: String): Long
+    @Query("SELECT COUNT(*) FROM loans WHERE employeeId = :employeeId AND date = :date AND description = :description") suspend fun loanTransactionExists(employeeId: Long, date: String, description: String): Int
+    @Query("SELECT * FROM loan_settings WHERE employeeId = :employeeId LIMIT 1") suspend fun loanSetting(employeeId: Long): LoanSetting?
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsertLoanSetting(setting: LoanSetting)
     @Insert suspend fun insertLoan(loan: Loan)
     @Query("SELECT COALESCE(SUM(amount),0) FROM loans WHERE employeeId = :employeeId") suspend fun loanTotal(employeeId: Long): Long
     @Query("SELECT * FROM loans WHERE date BETWEEN :start AND :end") suspend fun loansRange(start: String, end: String): List<Loan>
