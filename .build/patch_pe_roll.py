@@ -47,7 +47,8 @@ Spacer(Modifier.height(10.dp));Button(onClick={scope.launch{dao.deleteAttendance
 '''
 s=re.sub(r'@Composable private fun AttendanceScreen.*?@Composable private fun EmployeeDropdown',att+'\n@Composable private fun EmployeeDropdown',s,flags=re.S)
 
-datehelper=r'''@Composable private fun DatePickerField(label:String,date:LocalDate,onDateSelected:(LocalDate)->Unit,modifier:Modifier=Modifier){
+datehelper=r'''@OptIn(ExperimentalMaterial3Api::class)
+@Composable private fun DatePickerField(label:String,date:LocalDate,onDateSelected:(LocalDate)->Unit,modifier:Modifier=Modifier){
 var open by remember{mutableStateOf(false)}
 OutlinedButton(onClick={open=true},modifier=modifier.height(56.dp),shape=RoundedCornerShape(8.dp)){Icon(Icons.Default.CalendarToday,null,tint=Blue);Spacer(Modifier.width(8.dp));Column(horizontalAlignment=Alignment.Start){Text(label,fontSize=11.sp,color=Color.Gray);Text(fmt(date),fontSize=15.sp,color=Charcoal)}}
 if(open){val state=rememberDatePickerState(initialSelectedDateMillis=date.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli());DatePickerDialog(onDismissRequest={open=false},confirmButton={TextButton(onClick={state.selectedDateMillis?.let{onDateSelected(java.time.Instant.ofEpochMilli(it).atZone(java.time.ZoneId.systemDefault()).toLocalDate())};open=false}){Text("Pilih")}},dismissButton={TextButton(onClick={open=false}){Text("Batal")}}){DatePicker(state=state)}}
@@ -90,7 +91,7 @@ if(showPreview){androidx.compose.ui.window.Dialog(onDismissRequest={showPreview=
 '''
 s=re.sub(r'@Composable private fun AddEmployeeDialog.*?@Composable private fun CompanyDialog',add+'@Composable private fun CompanyDialog',s,flags=re.S)
 
-share=r'''private fun shareSlip(context:Context,company:CompanyProfile?,row:PayrollRow,paymentDate:LocalDate,type:String){
+share=r'''private fun shareSlip(context:Context,company:CompanyProfile?,row:PayrollRow,paymentDate:LocalDate,_type:String){
 val pdf=PdfDocument();val page=pdf.startPage(PdfDocument.PageInfo.Builder(595,842,1).create());val canvas=page.canvas;val blue=android.graphics.Color.rgb(18,104,232);val dark=android.graphics.Color.rgb(23,43,77);val gray=android.graphics.Color.rgb(100,110,125);val green=android.graphics.Color.rgb(22,138,91);val light=android.graphics.Color.rgb(245,248,252);val paint=Paint(Paint.ANTI_ALIAS_FLAG)
 paint.color=android.graphics.Color.WHITE;canvas.drawRoundRect(android.graphics.RectF(34f,34f,561f,808f),24f,24f,paint);paint.color=blue;canvas.drawRoundRect(android.graphics.RectF(34f,34f,561f,145f),24f,24f,paint);paint.color=android.graphics.Color.WHITE;paint.textSize=24f;paint.typeface=android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT,android.graphics.Typeface.BOLD);canvas.drawText(company?.name?:"Pe-Roll",58f,78f,paint);paint.textSize=12f;paint.typeface=android.graphics.Typeface.DEFAULT;canvas.drawText("SLIP GAJI",58f,101f,paint);canvas.drawText("Tanggal gajian: ${fmt(paymentDate)}",58f,122f,paint)
 paint.color=dark;paint.textSize=20f;paint.typeface=android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT,android.graphics.Typeface.BOLD);canvas.drawText(row.employee.name,58f,185f,paint);paint.color=gray;paint.textSize=13f;paint.typeface=android.graphics.Typeface.DEFAULT;canvas.drawText(row.employee.position,58f,207f,paint)
