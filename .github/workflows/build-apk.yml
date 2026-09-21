@@ -12,9 +12,14 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Extract MVP source archive
+      - name: Repair and extract MVP source archive
         run: |
-          unzip -q GTKreativePayroll_MVP_v0.1.zip -d build-source
+          zip -FF GTKreativePayroll_MVP_v0.1.zip --out repaired.zip >/tmp/zip-repair.log 2>&1 || {
+            cat /tmp/zip-repair.log
+            exit 1
+          }
+          cat /tmp/zip-repair.log
+          unzip -q repaired.zip -d build-source
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
