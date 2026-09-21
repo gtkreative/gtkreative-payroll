@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao interface PayrollDao {
     @Query("SELECT * FROM employees WHERE active = 1 ORDER BY name") fun employees(): Flow<List<Employee>>
-    @Insert suspend fun insertEmployee(employee: Employee)
+    @Insert suspend fun insertEmployee(employee: Employee): Long
     @Update suspend fun updateEmployee(employee: Employee)
     @Delete suspend fun deleteEmployee(employee: Employee)
 
