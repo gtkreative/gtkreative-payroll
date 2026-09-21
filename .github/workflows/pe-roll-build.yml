@@ -36,6 +36,8 @@ jobs:
           wc -l -c build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
           echo "DEBUG 90-110"
           nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '90,110p'
+          echo "DEBUG 210-225"
+          nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '210,225p'
           echo "DEBUG 235-270"
           nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '235,270p'
 
