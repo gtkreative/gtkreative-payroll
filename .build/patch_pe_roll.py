@@ -117,3 +117,5 @@ s=re.sub(r'@Composable private fun EmployeesScreen.*?@Composable private fun Att
 s=re.sub(r'@Composable private fun AddEmployeeDialog.*?@Composable private fun CompanyDialog',add+'\\n@Composable private fun CompanyDialog',s,flags=re.S)
 s=re.sub(r'if \(showAdd\) AddEmployeeDialog\([^\n]*', 'if (showAdd) AddEmployeeDialog(dao, { showAdd = false })', s)
 s=re.sub(r'1 -> EmployeesScreen\(employees, [^\n]*', '1 -> EmployeesScreen(employees, dao, { showAdd = true })', s)
+
+p.write_text(s)
