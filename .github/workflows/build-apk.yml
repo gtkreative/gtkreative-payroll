@@ -23,10 +23,10 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Extract MVP source
+      - name: Reconstruct MVP source archive
         run: |
           rm -rf build-source
-          mkdir -p build-source
+          cat .build/zip.part1 .build/zip.part2 .build/zip.part3 .build/zip.part4 .build/zip.part5 | tr -d '\n\r' | base64 -d > GTKreativePayroll_MVP_v0.1.zip
           unzip -q GTKreativePayroll_MVP_v0.1.zip -d build-source
 
       - name: Build debug APK
