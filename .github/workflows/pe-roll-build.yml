@@ -21,8 +21,7 @@ jobs:
           mkdir -p build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll
           cat .build/main0.kt .build/main1.kt .build/main2.kt .build/main3.kt .build/main4.kt .build/main5.kt > build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
           python3 .build/patch_pe_roll.py
-          python3 .build/patch_attendance_replace.py
-          python3 .build/final_fix.py
+          # Latest patch fully defines the requested screens; legacy patch scripts are intentionally skipped.
           mkdir -p build-source/PayrollApp/app/src/main/res/drawable
           cp .build/pe_roll_logo.xml build-source/PayrollApp/app/src/main/res/drawable/pe_roll_logo.xml
           sed -i 's/android:label="GTKreative Payroll"/android:label="Pe-Roll" android:icon="@drawable\/pe_roll_logo" android:roundIcon="@drawable\/pe_roll_logo"/' build-source/PayrollApp/app/src/main/AndroidManifest.xml
@@ -34,12 +33,6 @@ jobs:
           sed -i 's/contentColor = Charcoal//g' build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
           echo "Final MainActivity:"
           wc -l -c build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt
-          echo "DEBUG 90-110"
-          nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '90,110p'
-          echo "DEBUG 210-225"
-          nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '210,225p'
-          echo "DEBUG 235-270"
-          nl -ba build-source/PayrollApp/app/src/main/java/com/gtkreative/payroll/MainActivity.kt | sed -n '235,270p'
 
       - uses: actions/setup-java@v4
         with:
