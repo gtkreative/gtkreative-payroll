@@ -14,7 +14,7 @@ jobs:
 
       - name: Repair and extract MVP source archive
         run: |
-          zip -FF GTKreativePayroll_MVP_v0.1.zip --out repaired.zip >/tmp/zip-repair.log 2>&1 || {
+          yes "" | timeout 120s zip -FF GTKreativePayroll_MVP_v0.1.zip --out repaired.zip >/tmp/zip-repair.log 2>&1 || {
             cat /tmp/zip-repair.log
             exit 1
           }
