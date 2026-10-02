@@ -108,7 +108,7 @@ pdf.finishPage(page);val dir=File(context.cacheDir,"slip").apply{mkdirs()};val s
 '''
 s=re.sub(r'private fun shareSlip\(.*?\n\}',share,s,count=1,flags=re.S)
 s=s.replace('1 -> EmployeesScreen(employees, { showAdd = true })','1 -> EmployeesScreen(employees, dao, { showAdd = true })')
-p.write_text(s)
+s=re.sub(r'data class PayrollRow\\([^\\n]+\\)', 'data class PayrollRow(val employee: Employee, val days: Int, val lateMinutes: Int, val overtime: Double, val base: Long, val meal: Long, val overtimePay: Long, val overtimeMeal: Long, val loan: Long, val total: Long, val remainingLoan: Long)', s, count=1)\n\np.write_text(s)
 
 s=re.sub(r"if \(showAdd\) AddEmployeeDialog\([^\n]*", "if (showAdd) AddEmployeeDialog(dao, { showAdd = false })", s)
 
